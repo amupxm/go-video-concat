@@ -17,7 +17,6 @@ var AppConfig = &config.ConfigStruct{}
 func main() {
 	router := gin.Default()
 	AppConfig.LoadConfigs()
-
 	// =======  Database and Storage =========
 	postgres.PostgresConnection.ConnectDatabase(AppConfig)
 	postgres.AutoMigration()
