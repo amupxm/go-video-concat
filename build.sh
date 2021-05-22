@@ -1,0 +1,1 @@
+docker build --tag amupxm/go-video-concat . 
