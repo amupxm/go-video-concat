@@ -28,9 +28,7 @@ func (object *ObjectStorageStruct) Connect(cfg *config.ConfigStruct) {
 }
 
 func InitBuckets(buckets []string) {
-
 	for _, bucketName := range buckets {
-
 		status, err := ObjectStorage.Client.BucketExists(context.Background(), bucketName)
 		if err != nil {
 			log.Fatal(err)

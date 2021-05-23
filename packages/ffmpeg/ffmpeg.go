@@ -13,6 +13,7 @@ import (
 	"github.com/minio/minio-go/v7"
 )
 
+// create video from images with sertain duration ( end  - start seconds )
 func (f *FFmpeg_Generator) img2vid(index int, wg *sync.WaitGroup) {
 
 	img2vidArgs := []string{
@@ -42,9 +43,9 @@ func (f *FFmpeg_Generator) img2vid(index int, wg *sync.WaitGroup) {
 		f.Error.Message = "img 2 vid failure"
 	}
 	wg.Done()
-
 }
 
+// cut video with sertain duration ( end  - start seconds )
 func (f *FFmpeg_Generator) trimVid(index int, wg *sync.WaitGroup) {
 	vidTrimArgs := []string{
 		"-i",
@@ -72,6 +73,8 @@ func (f *FFmpeg_Generator) trimVid(index int, wg *sync.WaitGroup) {
 	}
 	wg.Done()
 }
+
+// connect chunk sections together to create video ( include splash )
 func (f *FFmpeg_Generator) Concat() bool {
 	count := len(f.Recipe.Chunks)
 	inputsStr := []string{}
@@ -97,9 +100,9 @@ func (f *FFmpeg_Generator) Concat() bool {
 	err := Execute(args...)
 
 	return err == nil
-
 }
 
+// Overlay Concatted video and add audio file to it and set sound level
 func (f *FFmpeg_Generator) OverLay() {
 	var args []string
 	if f.Recipe.ExternalAudio {
@@ -122,8 +125,7 @@ func (f *FFmpeg_Generator) OverLay() {
 	Execute(args...)
 }
 
-//=========================
-
+// Cut audio to sertain duration ( used to create splash file)
 func TrimAudio(audio FFmpeg_Audio) {
 	args := []string{
 		"-i", audio.Input,
@@ -138,6 +140,7 @@ func TrimAudio(audio FFmpeg_Audio) {
 	Execute(args...)
 }
 
+// Create splash file (intro video ) using merge video and audio together
 func CreateSplash(splash FFmpeg_Splash) {
 	args := []string{
 		"-i",
@@ -156,6 +159,7 @@ func CreateSplash(splash FFmpeg_Splash) {
 	Execute(args...)
 }
 
+// Generate splash (intro)
 func GenerateSplash(splash *splash.Splash) *FFmpeg_Message {
 	var storage = &s3.ObjectStorage
 	filemanager := filemanager.Temperory{DirName: splash.FileCode}
@@ -209,6 +213,9 @@ func GenerateSplash(splash *splash.Splash) *FFmpeg_Message {
 
 }
 
+/*
+return i+1 if i%2 == 0 || i
+*/
 func MakeEvenNumber(i int) int {
 	if i%2 == 0 {
 		return i

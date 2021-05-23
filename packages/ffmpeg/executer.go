@@ -26,6 +26,7 @@ const (
 	Verbose         = false
 )
 
+// Spawn chield proccess
 func Execute(args ...string) error {
 	cmd := exec.Command(FfmpegBinPath, args...)
 	if Verbose {
