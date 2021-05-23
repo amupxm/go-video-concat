@@ -36,6 +36,23 @@ type (
 	}
 	FFmpegInterface interface {
 		Generator(f *FFmpeg_Generator, responseChannel chan *FFmpeg_Message)
+		GenerateSplash(splash *splash.Splash) *FFmpeg_Message
+		img2vid(index int, wg *sync.WaitGroup)
+		trimVid(index int, wg *sync.WaitGroup)
+		CreateSplash(splash FFmpeg_Splash)
+		GetSplashFile(wg *sync.WaitGroup)
+		GetFRameFile(wg *sync.WaitGroup)
+		TrimAudio(audio FFmpeg_Audio)
+		Execute(args ...string) error
+		MakeEvenNumber(i int) int
+		ValidateSplash()
+		GenerateChunks()
+		ResponseError()
+		DownloadFiles()
+		FitSplash()
+		Overlay()
+		Concat()
+		TmpDir()
 	}
 )
 

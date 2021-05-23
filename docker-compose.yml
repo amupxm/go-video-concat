@@ -2,7 +2,7 @@ version : "3"
 
 services:
     app: 
-        image : amupxm/go-video-concat
+        build: .
         env_file: .env
         ports:
             - 8080:8080
@@ -10,7 +10,8 @@ services:
             - "redis"
             - "postgres"
             - "minio"
-
+        environment: 
+            GIN_MODE : release
         networks:
             - inner
        
