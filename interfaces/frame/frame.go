@@ -23,6 +23,7 @@ type (
 	}
 )
 
+// add frame to database and s3.
 func (frame *Frame) AddFrame() bool {
 	var Database = &postgres.PostgresConnection
 	var ObjectStorage = &s3.ObjectStorage
@@ -37,6 +38,7 @@ func (frame *Frame) AddFrame() bool {
 	return result.Error == nil
 }
 
+// get all frames and return as array frames
 func (frame *Frame) ListFrame() []Frame {
 	var Database = &postgres.PostgresConnection
 	var respone []Frame
@@ -44,6 +46,7 @@ func (frame *Frame) ListFrame() []Frame {
 	return respone
 }
 
+// use frame unique uuid to find frame and returns single frame
 func (frame *Frame) FindFrame(code string) (Frame, bool) {
 	var resultFrame Frame
 	var Database = &postgres.PostgresConnection
@@ -51,6 +54,7 @@ func (frame *Frame) FindFrame(code string) (Frame, bool) {
 	return resultFrame, !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }
 
+// get frame file from s3 and returns s3 object( read io ).
 func (frame *Frame) GetFile(frameCode string) (*minio.Object, bool) {
 	var tmp *minio.Object
 	_, status := frame.FindFrame(frameCode)
