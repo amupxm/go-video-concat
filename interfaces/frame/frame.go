@@ -61,7 +61,6 @@ func (frame *Frame) GetFile(frameCode string) (*minio.Object, bool) {
 	if !status {
 		return tmp, status
 	}
-
 	var ObjectStorage = &s3.ObjectStorage
 	reader, err := ObjectStorage.Client.GetObject(context.Background(), "frame", frameCode, minio.GetObjectOptions{})
 	if err != nil {

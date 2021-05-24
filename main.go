@@ -20,7 +20,7 @@ func main() {
 	// =======  Database and Storage =========
 	postgres.PostgresConnection.ConnectDatabase(AppConfig)
 	postgres.AutoMigration()
-	buckets := []string{"frame", "thumbnails", "splash", "upload", "splash-base", "splash-audio", "outputs"}
+	buckets := []string{"frame", "amupxm", "thumbnails", "splash", "upload", "splash-base", "splash-audio", "outputs"}
 	s3.ObjectStorage.Connect(AppConfig)
 	s3.InitBuckets(buckets)
 	cache.Init(AppConfig)
@@ -44,6 +44,8 @@ func main() {
 	// 3 - generator
 	router.POST("/generator/upload", ApiController.Generator_Upload)
 	router.POST("/generator", ApiController.Generator_Generate)
+	router.GET("/generator/:code/file", ApiController.Generator_file)
 	router.GET("/generator/:code", ApiController.Generator_Status)
+
 	router.Run()
 }

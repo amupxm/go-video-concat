@@ -1,15 +1,19 @@
 package ffmpeg
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"sync"
 
 	filemanager "github.com/amupxm/go-video-concat/interfaces/file-manager"
 	"github.com/amupxm/go-video-concat/interfaces/frame"
 	"github.com/amupxm/go-video-concat/interfaces/splash"
 	"github.com/amupxm/go-video-concat/packages/cache"
+
 	mediainfo "github.com/amupxm/go-video-concat/packages/mediaInfo"
 	"github.com/amupxm/go-video-concat/packages/s3"
 	"github.com/gofrs/uuid"
@@ -199,4 +203,62 @@ func (f *FFmpeg_Generator) TmpDir(operation string) {
 			f.Error.Message = "file operation error"
 		}
 	}
+}
+
+func (f *FFmpeg_Generator) GetFromS3(code string) (*minio.Object, string, error) {
+
+	var s3 = &s3.ObjectStorage
+	var tmp *minio.Object
+
+	reader, err := s3.Client.GetObject(context.Background(), "amupxm", code, minio.GetObjectOptions{})
+	if err != nil {
+		return tmp, "", err
+	}
+
+	if err != nil {
+		return tmp, "", err
+	}
+	return reader, "", nil
+}
+
+//write results to minio
+func (f *FFmpeg_Generator) WriteTos3() error {
+	var s3 = &s3.ObjectStorage
+	_, err := s3.Client.FPutObject(
+		context.Background(),
+		"amupxm",
+		f.UUID,
+		f.Dir+"x.mp4",
+		minio.PutObjectOptions{},
+	)
+	if err != nil {
+		log.Println(111, err)
+		return err
+	}
+	log.Println(111)
+	return nil
+}
+
+// send callback status
+func (f *FFmpeg_Generator) SendResponseCallback() error {
+	var callBack = []byte(`{"status":true , "url" : "url" }`)
+	req, err := http.NewRequest(
+		"POST",
+		f.Recipe.CallBackAddress,
+		bytes.NewBuffer(callBack),
+	)
+	if err != nil {
+		return errors.New("invalid request generation")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	cli := &http.Client{}
+	resp, err := cli.Do(req)
+	if err != nil {
+		return errors.New("call back failed ")
+	}
+	if resp.Status != "200 OK" {
+		return errors.New("callback responded with not 200 code")
+	}
+	defer resp.Body.Close()
+	return nil
 }

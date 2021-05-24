@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"log"
 
 	"github.com/amupxm/go-video-concat/config"
 	"github.com/go-redis/redis/v8"
@@ -39,9 +40,10 @@ func UpdateStatus(uuid, message string, status bool) bool {
 	var r = &CacheRedis
 	errors := make([]error, 2)
 	errors[1] = r.Cli.Set(ctx, uuid+":status", status, 0).Err()
-	errors[0] = r.Cli.Set(ctx, uuid+":message", status, 0).Err()
+	errors[0] = r.Cli.Set(ctx, uuid+":message", message, 0).Err()
+
 	for _, e := range errors {
-		if e != nil {
+		if e == nil {
 			return false
 		}
 	}
@@ -50,11 +52,12 @@ func UpdateStatus(uuid, message string, status bool) bool {
 
 func GetStatus(code string) (bool, string) {
 	var r = &CacheRedis
+	log.Println(code + ":status")
 	respStatus := r.Cli.Get(ctx, code+":status")
 	respMessage := r.Cli.Get(ctx, code+":message")
-	message := respMessage.String()
+	message := respMessage.Val()
 	status, err := respStatus.Bool()
-	if err != nil {
+	if err == nil {
 		return status, message
 	}
 	return false, "invalid code"

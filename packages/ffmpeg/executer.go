@@ -23,7 +23,7 @@ const (
 	FfmpegBinPath   = "/usr/bin/ffmpeg"
 	FfprobeBinPath  = "/usr/bin/ffprobe"
 	ProgressEnabled = true
-	Verbose         = false
+	Verbose         = true
 )
 
 // Spawn chield proccess
@@ -42,3 +42,5 @@ func Execute(args ...string) error {
 	}
 	return nil
 }
+
+// TODO : add transcoder for executable

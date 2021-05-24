@@ -82,7 +82,6 @@ func Generator_Generate(context *gin.Context) {
 	})
 	go func() {
 		ffmpeg.Generator(&f)
-
 	}()
 }
 
@@ -93,4 +92,29 @@ func Generator_Status(context *gin.Context) {
 		"status":  status,
 		"message": message,
 	})
+}
+
+func Generator_file(context *gin.Context) {
+	code := context.Param("code")
+	var gen ffmpeg.FFmpeg_Generator
+	file, _, status := gen.GetFromS3(code)
+	if status != nil {
+		log.Println(status)
+		context.JSON(http.StatusAccepted, gin.H{
+			"ok": false,
+		})
+		return
+	}
+	stat, err := file.Stat()
+	if err != nil {
+		context.JSON(http.StatusAccepted, gin.H{
+			"ok": false,
+		})
+		return
+	}
+	defer file.Close()
+	extraHeaders := map[string]string{}
+	fmt.Print(stat)
+	context.DataFromReader(http.StatusOK, stat.Size, stat.ContentType, file, extraHeaders)
+
 }

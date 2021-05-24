@@ -118,4 +118,6 @@ func Generator(f *FFmpeg_Generator) {
 	cache.UpdateStatus(f.UUID, "overlaying", true)
 	f.OverLay()
 	cache.UpdateStatus(f.UUID, "done", true)
+	f.WriteTos3()
+	defer f.SendResponseCallback()
 }
