@@ -75,7 +75,7 @@ func Generator_Generate(context *gin.Context) {
 	f.Error = &ffmpeg.FFmpeg_Message{}
 	processId, _ := uuid.NewV4()
 	f.UUID = processId.String()
-	context.JSON(http.StatusNotAcceptable, gin.H{
+	context.JSON(http.StatusAccepted, gin.H{
 		"ok":      true,
 		"message": "please wait",
 		"code":    f.UUID,
