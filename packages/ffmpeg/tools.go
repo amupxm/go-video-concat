@@ -90,7 +90,7 @@ func (f *FFmpeg_Generator) DownloadFiles() {
 		wg.Add(len(f.Recipe.Chunks) + 1)
 
 	} else {
-		wg.Add(len(f.Recipe.Chunks) + 1)
+		wg.Add(len(f.Recipe.Chunks))
 	}
 
 	innerResponseChannel := make(chan *FFmpeg_Message)
