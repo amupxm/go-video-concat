@@ -1,6 +1,4 @@
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
@@ -62,7 +60,7 @@ for example :
 
 </br>
 <p align="center">
-<img src="images/cover.png" alt="Logo" width="180" height="80">
+<img src="images/cover.png" alt="Logo" width="180">
 </p>
 
 First simply upload your frame to s3 :
@@ -190,12 +188,7 @@ Amir Hossein Mokaramifar - [@amupxm](https://twitter.com/amupxm) - amupxm@gmail.
 
 
 
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/amupxm/go-video-concat/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/amupxm/go-video-concat/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/mokaramifar/
 [product-screenshot]: images/screenshot.png
